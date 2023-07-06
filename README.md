@@ -11,8 +11,10 @@ This repository contains source code for the EMNLP 2022 Long Paper "GraphQ IR: U
 All required packages and versions can be found in the environment configuration file `environment.yml`, or you may simply build an identical conda environment like this:
 
 ```
-conda env create -f environment.yml
+conda env create -f environment_new.yml
 conda activate graphqir
+
+conda env update --file environment_new.yml
 ```
 
 As for our implemented source-to-source compiler, please refer to [GraphQ Trans](https://github.com/Flitternie/GraphQ_Trans) for its setup and usage.
@@ -137,6 +139,9 @@ python -m preprocess \
 --ir_mode graphq # or "cfq" for CFQ IR / removed for running baseline 
 ```
 
+```
+python -m preprocess --input_dir ./data/metaqa/data/1shot/ --output_dir ./exp_files/metaqa --model_name_or_path ./bart-base --config ./data/metaqa/config.py --ir_mode graphq
+```
 ### Training
 
 ```bash
@@ -149,6 +154,11 @@ python -m torch.distributed.launch --nproc_per_node=8 -m train \
 --ir_mode graphq # or "cfq" for CFQ IR / removed for running baseline 
 ```
 
+```
+python3 -m torch.distributed.launch --nproc_per_node=1 -m train --input_dir ./exp_files/metaqa/ --output_dir ./ex
+p_results/metaqa --model_name_or_path ./bart-base/ --config ./data/metaqa/config.py --batch_size 8 --ir_mode graphq
+```
+
 ### Inference
 
 ```bash
@@ -159,6 +169,10 @@ python -m inference \
 --ckpt ./exp_results/kqapro/checkpoint-best/ \ # path to saved checkpoint
 --config ./data/kqapro/config_sparql.py \ # path to data-specific configuration file
 --ir_mode graphq # or "cfq" for CFQ IR / removed for running baseline 
+```
+
+```
+python -m inference --input_dir ./exp_files/metaqa --output_dir ./exp_results/metaqa --model_name_or_path ./bart-base/ --ckpt ./exp_results/metaqa/checkpoint-best/ --config ./data/metaqa/config.py --ir_mode graphq
 ```
 
 ## Citation

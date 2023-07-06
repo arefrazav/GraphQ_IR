@@ -15,8 +15,9 @@ def encode_dataset(dataset, vocab, tokenizer):
     answers = []
     
     for item in tqdm(dataset):
-        inputs.append(item['input'])
-        targets.append(item['target'])
+        print("***", item)
+        inputs.append(item['question'])
+        targets.append(item['LF'])
 
         if vocab and 'choices' in item.keys() and 'answer' in item.keys():
             choices.append([vocab['answer_token_to_idx'][w] for w in item['choices']])

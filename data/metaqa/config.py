@@ -2,7 +2,9 @@ import os
 import json
 import numpy as np
 
-def load_metaqa(args):
+special_tokens = []
+
+def load_data(args):
     print('Build kb vocabulary')
     vocab = {
         'answer_token_to_idx': {}

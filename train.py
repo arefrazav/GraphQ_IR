@@ -190,7 +190,7 @@ def train(args):
             torch.cuda.empty_cache()
         if epochs_not_improving > args.early_stopping:
             logging.info("%d epochs not improving, training early stopped" % epochs_not_improving)
-            dist.destroy_process_group()
+
             return global_step, tr_loss / global_step
         
     return global_step, tr_loss / global_step
@@ -223,8 +223,10 @@ def main():
                         help="Max gradient norm.")
 
     parser.add_argument('--pretrain', action='store_true')
-    parser.add_argument('--local_rank', default=-1, type=int,
+    parser.add_argument('--local-rank', default=-1, type=int,
                     help='node rank for distributed training')
+    # Change to use torchrun
+    #local_rank = int(os.environ.get("LOCAL_RANK"))
     parser.add_argument('--port', default=12355, type=int)
 
     parser.add_argument('--ir_mode', default=None, choices=['graphq', 'cfq'])
